@@ -20,7 +20,7 @@ app.use(
         styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
         fontSrc: ["'self'", "https://fonts.gstatic.com"],
         imgSrc: ["'self'", "data:", "https://images.unsplash.com"],
-        connectSrc: ["'self'", ENV.CLIENT_URL, "http://localhost:5173", "http://127.0.0.1:5173"],
+        connectSrc: ["'self'", "*"],
       },
     },
     hsts: {
@@ -33,7 +33,7 @@ app.use(
   })
 );
 
-// 2. Strict Whitelisted CORS (Prevent Origin Reflection / CSRF)
+// 2. Dynamic Whitelisted CORS (Supports Localhost, Custom Domain, & Vercel Deployments)
 const allowedOrigins = [
   ENV.CLIENT_URL,
   "http://localhost:5173",
@@ -43,11 +43,18 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow server-to-server or whitelisted origin
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin) return callback(null, true);
+
+      const isAllowed =
+        allowedOrigins.includes(origin) ||
+        /^http:\/\/localhost:\d+$/.test(origin) ||
+        /^http:\/\/127\.0\.0\.1:\d+$/.test(origin) ||
+        origin.endsWith(".vercel.app");
+
+      if (isAllowed) {
         callback(null, true);
       } else {
-        callback(new Error("CORS policy violation: Access from specified origin denied."));
+        callback(new Error(`CORS policy violation: Access from origin '${origin}' denied.`));
       }
     },
     credentials: true,
