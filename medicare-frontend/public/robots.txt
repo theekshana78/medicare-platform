@@ -1,0 +1,21 @@
+﻿# MediCore Healthcare Robots.txt
+User-agent: *
+Allow: /
+Allow: /about
+Allow: /services
+Allow: /doctors
+Allow: /contact
+Allow: /login
+Allow: /doctor/login
+Allow: /admin/login
+Allow: /register
+
+# Disallow authenticated private patient records & admin controls from search indexing
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /appointments
+Disallow: /appointments/
+Disallow: /api/
+
+# Sitemap Location
+Sitemap: https://medicore.health/sitemap.xml

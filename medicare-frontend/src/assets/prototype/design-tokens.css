@@ -1,0 +1,26 @@
+
+:root {
+  /* Brand */
+  --color-primary: #0f766e;
+  --color-primary-hover: #115e59;
+  --color-accent: #38bdf8;
+
+  /* Surfaces */
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-border: #e2e8f0;
+
+  /* Typography */
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+
+  /* Status */
+  --color-success: #15803d;
+  --color-warning: #b45309;
+  --color-danger: #dc2626;
+
+  /* Layout */
+  --radius-card: 16px;
+  --radius-input: 10px;
+  --shadow-card: 0 4px 20px rgb(15 23 42 / 5%);
+}

@@ -1,0 +1,122 @@
+﻿rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =====================================================================
+    // 1. GLOBAL HELPER FUNCTIONS
+    // =====================================================================
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function hasRole(role) {
+      return isSignedIn() && (
+        (request.auth.token.role == role) ||
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == role)
+      );
+    }
+
+    function isAdmin() {
+      return hasRole('admin');
+    }
+
+    function isDoctor() {
+      return hasRole('doctor');
+    }
+
+    function isPatient() {
+      return hasRole('patient');
+    }
+
+    // Default Deny All Documents
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // =====================================================================
+    // 2. USERS COLLECTION
+    // =====================================================================
+    match /users/{userId} {
+      // Users can read their own profile; Doctors and Admins can view patient records for care
+      allow read: if isOwner(userId) || isDoctor() || isAdmin();
+
+      // Patients can self-register their own UID; Role must strictly be 'patient'
+      allow create: if isOwner(userId) && (
+        request.resource.data.role == 'patient' || isAdmin()
+      );
+
+      // Users can update their demographic details, but CANNOT escalate their own role
+      allow update: if (isOwner(userId) && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role']))
+                    || isAdmin();
+
+      // Only Administrators can delete user accounts
+      allow delete: if isAdmin();
+    }
+
+    // =====================================================================
+    // 3. DOCTORS DIRECTORY
+    // =====================================================================
+    match /doctors/{doctorId} {
+      // Verified doctors are public for directory browsing; Unverified are restricted to Admin
+      allow read: if resource.data.isVerified == true || isAdmin();
+
+      // Only Administrators can verify doctors or register new medical staff
+      allow create, delete: if isAdmin();
+
+      // Assigned doctor can update consultation schedule; only Admin can alter isVerified
+      allow update: if (isOwner(doctorId) && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['isVerified']))
+                    || isAdmin();
+    }
+
+    // =====================================================================
+    // 4. APPOINTMENTS COLLECTION (IDOR & CONCURRENCY DEFENSE)
+    // =====================================================================
+    match /appointments/{appointmentId} {
+      // IDOR Defense: Only the patient who booked, the assigned doctor, or admin can read
+      allow read: if isSignedIn() && (
+        resource.data.patientId == request.auth.uid ||
+        resource.data.doctorId == request.auth.uid ||
+        isAdmin()
+      );
+
+      // Creation: Only authenticated patients can book for themselves (patientId MUST match auth.uid)
+      allow create: if isSignedIn() && (
+        (isPatient() && request.resource.data.patientId == request.auth.uid && request.resource.data.status in ['pending', 'confirmed']) ||
+        isAdmin()
+      );
+
+      // Status updates & cancellations
+      allow update: if isSignedIn() && (
+        // Doctor: can only update status & notes on appointments assigned to their UID
+        (isDoctor() && resource.data.doctorId == request.auth.uid && 
+         request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'physicianNotes', 'updatedAt', 'updatedBy'])) ||
+        // Patient: can only cancel their own appointment
+        (isPatient() && resource.data.patientId == request.auth.uid && 
+         request.resource.data.status == 'cancelled' &&
+         request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'cancelledAt', 'cancelledBy'])) ||
+        // Admin: unrestricted operational authority
+        isAdmin()
+      );
+
+      allow delete: if isAdmin();
+    }
+
+    // =====================================================================
+    // 5. AUDIT LOGS (IMMUTABLE RECORD)
+    // =====================================================================
+    match /audit_logs/{logId} {
+      // Only Administrators can inspect clinical audit logs
+      allow read: if isAdmin();
+
+      // Append-only audit trail: authenticated actors can record actions
+      allow create: if isSignedIn() && request.resource.data.actorId == request.auth.uid;
+
+      // Absolute Immutability: Audit logs can NEVER be updated or deleted by anyone
+      allow update, delete: if false;
+    }
+  }
+}

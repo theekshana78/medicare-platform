@@ -1,0 +1,30 @@
+﻿export const DEMO_USERS = {
+  patient: {
+    id: "pat-101",
+    name: "Kasun Jayawardena",
+    email: "patient@medicore.health",
+    role: "patient",
+    avatar: "KJ",
+    phone: "+94 77 123 4567",
+    bloodGroup: "O+",
+    dob: "1994-06-12",
+  },
+  doctor: {
+    id: "doc-1",
+    name: "Dr. Sarah Jenkins",
+    email: "dr.jenkins@medicore.health",
+    role: "doctor",
+    avatar: "SJ",
+    specialty: "Cardiology",
+    qualification: "MBBS, MD (Cardiology), FRCP (UK)",
+    room: "OPD Room 204",
+  },
+  admin: {
+    id: "adm-01",
+    name: "Admin Theekshana",
+    email: "admin@medicore.health",
+    role: "admin",
+    avatar: "AD",
+    department: "Hospital Administration & IT",
+  },
+};

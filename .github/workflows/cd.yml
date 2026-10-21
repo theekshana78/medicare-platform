@@ -1,0 +1,68 @@
+﻿name: MediCore Continuous Deployment (CD)
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  # =========================================================================
+  # 1. DEPLOY FRONTEND: Firebase Hosting / Static Deployment
+  # =========================================================================
+  deploy-frontend:
+    name: Deploy Frontend (Firebase Hosting / Vercel)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: medicare-frontend
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+          cache-dependency-path: medicare-frontend/package-lock.json
+
+      - name: Install Dependencies & Build Bundle
+        env:
+          VITE_BASE_URL: https://api.medicore.health/api
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        if: env.FIREBASE_SERVICE_ACCOUNT_MEDICORE != ''
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_MEDICORE }}"
+          channelId: live
+          projectId: medicore-healthcare-ea02d
+        env:
+          FIREBASE_SERVICE_ACCOUNT_MEDICORE: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_MEDICORE }}"
+
+  # =========================================================================
+  # 2. DEPLOY BACKEND: Docker Container / Cloud Run
+  # =========================================================================
+  deploy-backend:
+    name: Deploy Backend Container (Google Cloud Run / Render)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: medicare-backend
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Backend Docker Image
+        run: |
+          docker build -t medicore-backend:latest .
+          echo "✓ Backend Docker container built and validated."

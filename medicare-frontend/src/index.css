@@ -1,0 +1,34 @@
+﻿/* ==========================================================================
+   MEDICORE HEALTHCARE MANAGEMENT PLATFORM — CENTRALIZED ENTRY STYLESHEET
+   File: src/index.css
+   Purpose: Tailwind CSS v4 + Centralized Design System Architecture
+   ========================================================================== */
+
+/* Google Font: Inter */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Tailwind CSS v4 */
+@import "tailwindcss";
+
+/* 1. Design Tokens (Single Source of Truth for Variables) */
+@import "./prototype/design-tokens.css";
+
+/* 2. Browser Resets & Global Typography */
+@import "./assets/css/reset.css";
+@import "./prototype/typography.css";
+
+/* 3. Base & Global Styling */
+@import "./assets/css/global.css";
+
+/* 4. Core Elements: Buttons & Forms */
+@import "./assets/css/buttons.css";
+@import "./assets/css/forms.css";
+
+/* 5. Centralized Reusable Component Primitives */
+@import "./prototype/components.css";
+
+/* 6. Layout Containers, Shells & Grids */
+@import "./assets/css/layouts.css";
+
+/* 7. Utilities & Micro-Animations */
+@import "./assets/css/utilities.css";

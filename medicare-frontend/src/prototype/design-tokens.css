@@ -1,0 +1,196 @@
+﻿/* ==========================================================================
+   MEDICORE DESIGN SYSTEM — DESIGN TOKENS
+   File: src/prototype/design-tokens.css
+   Purpose: Centralized CSS Custom Properties (Single Source of Truth)
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     1. Brand & Accent Colors (Healthcare Professional Teal Palette)
+     ------------------------------------------------------------------------ */
+  --color-primary-50: #f0fdfa;
+  --color-primary-100: #ccfbf1;
+  --color-primary-200: #99f6e4;
+  --color-primary-300: #5eead4;
+  --color-primary-400: #2dd4bf;
+  --color-primary-500: #14b8a6;
+  --color-primary-600: #0d9488;
+  --color-primary-700: #0f766e; /* Main Brand Primary */
+  --color-primary-800: #115e59;
+  --color-primary-900: #134e4a;
+  --color-primary-950: #042f2e;
+
+  /* Aliases for easy usage */
+  --color-primary: var(--color-primary-700);
+  --color-primary-hover: var(--color-primary-800);
+  --color-primary-light: var(--color-primary-50);
+  --color-primary-focus: rgba(15, 118, 110, 0.25);
+
+  /* Secondary / Accent Color (Medical Cyan / Sky) */
+  --color-secondary-50: #f0f9ff;
+  --color-secondary-100: #e0f2fe;
+  --color-secondary-500: #0ea5e9;
+  --color-secondary-600: #0284c7;
+  --color-secondary-700: #0369a1;
+  --color-secondary: var(--color-secondary-600);
+  --color-secondary-hover: var(--color-secondary-700);
+  --color-secondary-light: var(--color-secondary-100);
+
+  /* ------------------------------------------------------------------------
+     2. Surface & Background Colors
+     ------------------------------------------------------------------------ */
+  --color-background: #f8fafc;        /* App background (Slate-50) */
+  --color-surface: #ffffff;           /* Card & Container surface */
+  --color-surface-hover: #f1f5f9;     /* Subtle hover state */
+  --color-surface-subtle: #f8fafc;    /* Nested element surface */
+  --color-surface-dark: #0f172a;      /* Dark mode/Sidebar dark alternative */
+
+  /* ------------------------------------------------------------------------
+     3. Neutral & Text Colors
+     ------------------------------------------------------------------------ */
+  --color-text-main: #0f172a;         /* High contrast body text (Slate-900) */
+  --color-text-body: #334155;         /* Standard body text (Slate-700) */
+  --color-text-muted: #64748b;        /* Subtitles & captions (Slate-500) */
+  --color-text-subtle: #94a3b8;       /* Placeholders, disabled (Slate-400) */
+  --color-text-inverse: #ffffff;      /* Text on dark/primary surfaces */
+
+  /* ------------------------------------------------------------------------
+     4. Border & Divider Colors
+     ------------------------------------------------------------------------ */
+  --color-border-subtle: #f1f5f9;
+  --color-border: #e2e8f0;            /* Default border (Slate-200) */
+  --color-border-strong: #cbd5e1;     /* Focus / prominent border (Slate-300) */
+
+  /* ------------------------------------------------------------------------
+     5. Functional & Status Colors (Healthcare Alerts & Badges)
+     ------------------------------------------------------------------------ */
+  /* Success (Confirmed, Active, Resolved) */
+  --color-success: #16a34a;
+  --color-success-hover: #15803d;
+  --color-success-light: #dcfce7;
+  --color-success-border: #bbf7d0;
+  --color-success-text: #166534;
+
+  /* Warning (Pending, Needs Attention) */
+  --color-warning: #d97706;
+  --color-warning-hover: #b45309;
+  --color-warning-light: #fef3c7;
+  --color-warning-border: #fde68a;
+  --color-warning-text: #92400e;
+
+  /* Danger / Error (Cancelled, Rejected, Critical) */
+  --color-danger: #dc2626;
+  --color-danger-hover: #b91c1c;
+  --color-danger-light: #fee2e2;
+  --color-danger-border: #fecaca;
+  --color-danger-text: #991b1b;
+
+  /* Info (Scheduled, Neutral Notice) */
+  --color-info: #0284c7;
+  --color-info-hover: #0369a1;
+  --color-info-light: #e0f2fe;
+  --color-info-border: #bae6fd;
+  --color-info-text: #075985;
+
+  /* ------------------------------------------------------------------------
+     6. Typography Scale & Font Families
+     ------------------------------------------------------------------------ */
+  --font-family-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-4xl: 2.25rem;   /* 36px */
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+
+  /* ------------------------------------------------------------------------
+     7. Spacing Scale (4px Base Grid)
+     ------------------------------------------------------------------------ */
+  --space-0: 0px;
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+  --space-20: 5rem;    /* 80px */
+
+  /* ------------------------------------------------------------------------
+     8. Border Radii
+     ------------------------------------------------------------------------ */
+  --radius-none: 0px;
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Component specific radii */
+  --radius-card: var(--radius-lg);
+  --radius-button: var(--radius-md);
+  --radius-input: var(--radius-md);
+  --radius-badge: var(--radius-full);
+  --radius-modal: var(--radius-xl);
+
+  /* ------------------------------------------------------------------------
+     9. Shadows & Elevations
+     ------------------------------------------------------------------------ */
+  --shadow-xs: 0 1px 2px 0 rgb(15 23 42 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(15 23 42 / 0.08), 0 1px 2px -1px rgb(15 23 42 / 0.08);
+  --shadow-md: 0 4px 6px -1px rgb(15 23 42 / 0.08), 0 2px 4px -2px rgb(15 23 42 / 0.08);
+  --shadow-lg: 0 10px 15px -3px rgb(15 23 42 / 0.08), 0 4px 6px -4px rgb(15 23 42 / 0.08);
+  --shadow-xl: 0 20px 25px -5px rgb(15 23 42 / 0.1), 0 8px 10px -6px rgb(15 23 42 / 0.1);
+  --shadow-card: 0 4px 20px rgb(15 23 42 / 0.06);
+  --shadow-dropdown: 0 10px 30px rgb(15 23 42 / 0.12);
+  --shadow-modal: 0 25px 50px -12px rgb(15 23 42 / 0.25);
+
+  /* ------------------------------------------------------------------------
+     10. Layout Containers & Breakpoints
+     ------------------------------------------------------------------------ */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+  --container-2xl: 1440px;
+  --sidebar-width: 260px;
+  --header-height: 70px;
+
+  /* ------------------------------------------------------------------------
+     11. Z-Index Scale
+     ------------------------------------------------------------------------ */
+  --z-negative: -1;
+  --z-elevate: 1;
+  --z-sticky: 100;
+  --z-header: 500;
+  --z-drawer: 800;
+  --z-dropdown: 1000;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-toast: 1070;
+
+  /* ------------------------------------------------------------------------
+     12. Transitions & Animations
+     ------------------------------------------------------------------------ */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}

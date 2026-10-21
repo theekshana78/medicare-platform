@@ -1,0 +1,22 @@
+﻿# Dependencies
+node_modules/
+npm-debug.log*
+
+# Environment Secrets
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Firebase Private Keys
+serviceAccountKey.json
+firebase-service-account.json
+*.pem
+*.key
+
+# Application & Error Logs
+logs/
+*.log
+
+# Test & Coverage
+coverage/
